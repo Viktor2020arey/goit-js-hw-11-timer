@@ -1,71 +1,47 @@
-// const date1 = Date.now();
-// console.log('date1', date1);
-// // 1 января 1970 00: 00;
+class CountdownTimer {
+  constructor({ selector, targetDate }) {
+    this.selector = document.querySelector(selector);
+    this.targetDate = targetDate;
+  }
 
-// // разница во времени
-
-// setTimeout(() => {
-//   const date2 = Date.now();
-//   console.log('date1', date1);
-//   console.log('date2', date2);
-
-//   console.log(date2 - date1);
-// }, 3000);
-
-// -------------------------------------------------
-const refs = {
-  clockTimer: document.querySelector('#timer-1'),
-  clockDays: document.querySelector('[data-value="days"]'),
-  clockHours: document.querySelector('[data-value="hours"]'),
-  clockMinutes: document.querySelector('[data-value="mins"]'),
-  clockSeconds: document.querySelector('[data-value="secs"]'),
-};
-
-//  new CountdownTimer({
-//   selector: '#timer-1',
-//   targetDate: new Date('Jun 21, 2021'),
-// });
-
-const timer = {
   start() {
-    const startTime = new Date('Jun 21, 2021');
     setInterval(() => {
       const currentTime = Date.now();
-      const deltaTime = startTime - currentTime;
-      const time = getTimeComponents(deltaTime);
-      updateClockFace(time);
+      const deltaTime = this.targetDate - currentTime;
+      const time = this.getTimeComponents(deltaTime);
 
-      console.log(
-        `${pad(new Date(deltaTime).getUTCDay())}:${pad(
-          new Date(deltaTime).getUTCHours(),
-        )}:${pad(new Date(deltaTime).getUTCMinutes())}:${pad(
-          new Date(deltaTime).getUTCSeconds(),
-        )}`,
-      );
+      this.updateClockFace(time);
     }, 1000);
-  },
-};
+  }
+
+  updateClockFace({ days, hours, mins, secs }) {
+    this.selector.querySelector('[data-value="days"]').textContent = `${days}`;
+    this.selector.querySelector(
+      '[data-value="hours"]',
+    ).textContent = `${hours}`;
+    this.selector.querySelector('[data-value="mins"]').textContent = `${mins}`;
+    this.selector.querySelector('[data-value="secs"]').textContent = `${secs}`;
+  }
+
+  getTimeComponents(time) {
+    const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = this.pad(
+      Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    );
+    const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+
+    return { days, hours, mins, secs };
+  }
+
+  pad(value) {
+    return String(value).padStart(2, '0');
+  }
+}
+
+const timer = new CountdownTimer({
+  selector: '#timer-1',
+  targetDate: new Date('Jun 21, 2021'),
+});
 
 timer.start();
-
-function pad(value) {
-  return String(value).padStart(2, '0');
-}
-
-function getTimeComponents(time) {
-  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-  const hours = pad(
-    Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-  );
-  const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-  const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-
-  return { days, hours, mins, secs };
-}
-
-function updateClockFace({ days, hours, mins, secs }) {
-  refs.clockDays.textContent = `${days}`;
-  refs.clockHours.textContent = `${hours}`;
-  refs.clockMinutes.textContent = `${mins}`;
-  refs.clockSeconds.textContent = `${secs}`;
-}
