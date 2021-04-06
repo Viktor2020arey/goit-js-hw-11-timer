@@ -13,7 +13,6 @@
 // }, 3000);
 
 // -------------------------------------------------
-
 const refs = {
   clockDays: document.querySelector('[data-value="days"]'),
   clockHours: document.querySelector('[data-value="hours"]'),
@@ -29,7 +28,6 @@ const timer = {
       const currentTime = Date.now();
       const deltaTime = currentTime - startTime;
       const time = getTimeComponents(deltaTime);
-      // console.log(`${days}:${hours}:${mins}:${secs}`);
       updateClockFace(time);
 
       console.log(
@@ -66,3 +64,8 @@ function updateClockFace({ days, hours, mins, secs }) {
   refs.clockMinutes.textContent = `${mins}`;
   refs.clockSeconds.textContent = `${secs}`;
 }
+
+// new CountdownTimer({
+//   selector: '#timer-1',
+//   targetDate: new Date('Jul 17, 2019'),
+// });
