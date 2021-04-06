@@ -13,6 +13,14 @@
 // }, 3000);
 
 // -------------------------------------------------
+
+const refs = {
+  clockDays: document.querySelector('[data-value="days"]'),
+  clockHours: document.querySelector('[data-value="hours"]'),
+  clockMinutes: document.querySelector('[data-value="mins"]'),
+  clockSeconds: document.querySelector('[data-value="secs"]'),
+};
+
 const timer = {
   start() {
     const startTime = Date.now();
@@ -20,8 +28,17 @@ const timer = {
     setInterval(() => {
       const currentTime = Date.now();
       const deltaTime = currentTime - startTime;
-      const { days, hours, mins, secs } = getTimeComponents(deltaTime);
-      console.log(`${days}:${hours}:${mins}:${secs}`);
+      const time = getTimeComponents(deltaTime);
+      // console.log(`${days}:${hours}:${mins}:${secs}`);
+      updateClockFace(time);
+
+      console.log(
+        `${pad(new Date(deltaTime).getUTCDay())}:${pad(
+          new Date(deltaTime).getUTCHours(),
+        )}:${pad(new Date(deltaTime).getUTCMinutes())}:${pad(
+          new Date(deltaTime).getUTCSeconds(),
+        )}`,
+      );
     }, 1000);
   },
 };
@@ -41,4 +58,11 @@ function getTimeComponents(time) {
   const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
 
   return { days, hours, mins, secs };
+}
+
+function updateClockFace({ days, hours, mins, secs }) {
+  refs.clockDays.textContent = `${days}`;
+  refs.clockHours.textContent = `${hours}`;
+  refs.clockMinutes.textContent = `${mins}`;
+  refs.clockSeconds.textContent = `${secs}`;
 }
