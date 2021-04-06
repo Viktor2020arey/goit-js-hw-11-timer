@@ -14,19 +14,24 @@
 
 // -------------------------------------------------
 const refs = {
+  clockTimer: document.querySelector('#timer-1'),
   clockDays: document.querySelector('[data-value="days"]'),
   clockHours: document.querySelector('[data-value="hours"]'),
   clockMinutes: document.querySelector('[data-value="mins"]'),
   clockSeconds: document.querySelector('[data-value="secs"]'),
 };
 
+//  new CountdownTimer({
+//   selector: '#timer-1',
+//   targetDate: new Date('Jun 21, 2021'),
+// });
+
 const timer = {
   start() {
-    const startTime = Date.now();
-
+    const startTime = new Date('Jun 21, 2021');
     setInterval(() => {
       const currentTime = Date.now();
-      const deltaTime = currentTime - startTime;
+      const deltaTime = startTime - currentTime;
       const time = getTimeComponents(deltaTime);
       updateClockFace(time);
 
@@ -64,8 +69,3 @@ function updateClockFace({ days, hours, mins, secs }) {
   refs.clockMinutes.textContent = `${mins}`;
   refs.clockSeconds.textContent = `${secs}`;
 }
-
-// new CountdownTimer({
-//   selector: '#timer-1',
-//   targetDate: new Date('Jul 17, 2019'),
-// });
